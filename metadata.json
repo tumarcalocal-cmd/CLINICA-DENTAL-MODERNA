@@ -1,0 +1,6 @@
+{
+  "name": "Clínica Dental Moderna – Odontología Luxury & Cotizador",
+  "description": "Demostración comercial luxury para clínicas odontológicas con cotizador interactivo de tratamientos y reserva de citas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
