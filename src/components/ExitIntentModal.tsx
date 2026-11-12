@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, X, ArrowRight } from 'lucide-react';
+import { X, ArrowRight } from 'lucide-react';
+import { DentalLogo } from './DentalLogo';
 
 interface ExitIntentModalProps {
   onExploreTreatments: () => void;
@@ -49,8 +50,8 @@ export const ExitIntentModal: React.FC<ExitIntentModalProps> = ({ onExploreTreat
           <X className="w-5 h-5" />
         </button>
 
-        <div className="w-12 h-12 rounded-full bg-[#C5A46D]/20 border border-[#C5A46D] text-[#C5A46D] flex items-center justify-center mx-auto">
-          <Sparkles className="w-6 h-6" />
+        <div className="w-12 h-12 rounded-xl bg-[#C5A46D]/15 border border-[#C5A46D]/70 text-[#C5A46D] flex items-center justify-center mx-auto">
+          <DentalLogo className="w-7 h-7" />
         </div>
 
         <div className="text-center space-y-3">
@@ -58,7 +59,7 @@ export const ExitIntentModal: React.FC<ExitIntentModalProps> = ({ onExploreTreat
             TU SONRISA MERECE UN MOMENTO DE ATENCIÓN.
           </h3>
           <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
-            Explora nuestros tratamientos odontológicos y consulta el presupuesto orientativo de tu visita.
+            Explora nuestras especialidades odontológicas y solicita tu cotización o agenda tu visita de valoración.
           </p>
         </div>
 

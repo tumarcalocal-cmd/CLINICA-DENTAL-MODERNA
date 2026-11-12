@@ -59,7 +59,7 @@ export const HoursAndLocation: React.FC = () => {
                   <MapPin className="w-4 h-4 text-[#C5A46D] shrink-0 mt-0.5" />
                   <div>
                     <span className="font-bold text-white block">Dirección de Referencia:</span>
-                    <span>Panamá (Referencia geográfica general para demostración comercial)</span>
+                    <span>Ciudad de Panamá, Capital (Referencia geográfica para demostración comercial)</span>
                   </div>
                 </div>
 
@@ -83,7 +83,7 @@ export const HoursAndLocation: React.FC = () => {
 
             <div className="pt-4 border-t border-white/10">
               <a
-                href="https://maps.google.com/?q=Panama"
+                href="https://maps.google.com/?q=Ciudad+de+Panama,+Panama"
                 target="_blank"
                 rel="noreferrer"
                 className="w-full py-3 bg-[#C5A46D] hover:bg-[#b38f56] text-[#10283F] font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md"
@@ -98,8 +98,8 @@ export const HoursAndLocation: React.FC = () => {
           {/* Interactive Google Maps Embed - Right 7 Cols */}
           <div className="lg:col-span-7 bg-white border border-[#E8E9E7] rounded-2xl overflow-hidden shadow-xl min-h-[400px]">
             <iframe
-              title="Google Maps Ubicación Panamá"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d252230.1235678!2d-79.52!3d8.98!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8faca8f1d3882779%3A0x7d6c62c93051410f!2sPanam%C3%A1!5e0!3m2!1ses!2spa!4v1680000000000!5m2!1ses!2spa"
+              title="Google Maps Ciudad de Panamá, Capital"
+              src="https://maps.google.com/maps?q=Ciudad%20de%20Panam%C3%A1,%20Panam%C3%A1&t=&z=13&ie=UTF8&iwloc=&output=embed"
               width="100%"
               height="100%"
               style={{ border: 0, minHeight: '400px' }}

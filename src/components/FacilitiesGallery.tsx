@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles } from 'lucide-react';
+import { Building2 } from 'lucide-react';
 
 export const FacilitiesGallery: React.FC = () => {
   const facilities = [
@@ -35,7 +35,7 @@ export const FacilitiesGallery: React.FC = () => {
         
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-14">
           <span className="text-xs font-bold text-[#C5A46D] uppercase tracking-widest flex items-center justify-center gap-1.5">
-            <Sparkles className="w-4 h-4 text-[#C5A46D]" />
+            <Building2 className="w-4 h-4 text-[#C5A46D]" />
             INSTALACIONES & EQUIPAMIENTO
           </span>
           <h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-[#10283F]">

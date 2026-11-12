@@ -1,29 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { SelectedTreatment, AdditionalService, AppointmentBookingRequest } from '../types/dental';
-import { DOCTOR_PROFILES, DENTAL_TREATMENTS } from '../data/dentalData';
-import { Calendar, Clock, User, Phone, Mail, FileText, CheckCircle2, MessageSquare, AlertCircle, Info } from 'lucide-react';
+import { SpecialtyCategory } from '../types/dental';
+import { DOCTOR_PROFILES, DENTAL_TREATMENTS, SPECIALTY_CAROUSEL_ITEMS } from '../data/dentalData';
+import { Calendar, Clock, User, Phone, Mail, FileText, CheckCircle2, MessageSquare, Info, Stethoscope } from 'lucide-react';
 
 interface BookingCalendarProps {
-  selectedTreatments: SelectedTreatment[];
-  additionalServices: AdditionalService[];
+  selectedSpecialty?: SpecialtyCategory;
+  selectedTreatmentName?: string;
   preselectedDoctorId?: string;
   onOpenLegal: (tab: 'privacy' | 'terms' | 'disclaimer') => void;
 }
 
 export const BookingCalendar: React.FC<BookingCalendarProps> = ({
-  selectedTreatments,
-  additionalServices,
+  selectedSpecialty,
+  selectedTreatmentName,
   preselectedDoctorId,
   onOpenLegal,
 }) => {
-  // Calendar dates generation (next 14 days)
   const generateAvailableDates = () => {
     const dates = [];
     const today = new Date();
     for (let i = 1; i <= 14; i++) {
       const nextDate = new Date(today);
       nextDate.setDate(today.getDate() + i);
-      // Skip Sundays
       if (nextDate.getDay() !== 0) {
         dates.push({
           fullDate: nextDate.toISOString().split('T')[0],
@@ -39,7 +37,12 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({
   const availableDates = generateAvailableDates();
   const timeSlots = ['08:00 AM', '09:30 AM', '11:00 AM', '02:00 PM', '03:30 PM', '05:00 PM'];
 
-  // Form State
+  const [specialty, setSpecialty] = useState<SpecialtyCategory>(
+    selectedSpecialty || 'ODONTOLOGÍA GENERAL'
+  );
+  const [treatmentInterest, setTreatmentInterest] = useState<string>(
+    selectedTreatmentName || 'Consulta Odontológica y Evaluación Dental'
+  );
   const [selectedDate, setSelectedDate] = useState<string>(availableDates[0]?.fullDate || '');
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>('09:30 AM');
   const [preferredDoctorId, setPreferredDoctorId] = useState<string>(preselectedDoctorId || '');
@@ -48,10 +51,19 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({
   const [patientEmail, setPatientEmail] = useState<string>('');
   const [notes, setNotes] = useState<string>('');
   const [acceptedPrivacy, setAcceptedPrivacy] = useState<boolean>(true);
-  
-  // Custom manual treatment fallback if none selected from cotizador
-  const [manualTreatmentId, setManualTreatmentId] = useState<string>('gen-01');
   const [submittedModal, setSubmittedModal] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (selectedSpecialty) {
+      setSpecialty(selectedSpecialty);
+      const matching = DENTAL_TREATMENTS.filter((t) => t.specialty === selectedSpecialty);
+      if (selectedTreatmentName) {
+        setTreatmentInterest(selectedTreatmentName);
+      } else if (matching.length > 0) {
+        setTreatmentInterest(matching[0].name);
+      }
+    }
+  }, [selectedSpecialty, selectedTreatmentName]);
 
   useEffect(() => {
     if (preselectedDoctorId) {
@@ -59,51 +71,36 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({
     }
   }, [preselectedDoctorId]);
 
-  // Calculations
-  const activeAdditionals = additionalServices.filter(s => s.selected);
-  const totalEstimatedUSD = selectedTreatments.length > 0
-    ? selectedTreatments.reduce((sum, st) => sum + st.subtotalUSD, 0) + activeAdditionals.reduce((sum, s) => sum + s.priceUSD, 0)
-    : (DENTAL_TREATMENTS.find(t => t.id === manualTreatmentId)?.priceUSD || 35);
+  const treatmentsForSpecialty = DENTAL_TREATMENTS.filter((t) => t.specialty === specialty);
 
-  const totalEstimatedDurationMinutes = selectedTreatments.length > 0
-    ? selectedTreatments.reduce((sum, st) => {
-        const durationMatch = st.treatment.indicativeDuration.match(/(\d+)/);
-        const mins = durationMatch ? parseInt(durationMatch[1], 10) : 30;
-        return sum + (mins * st.quantity);
-      }, 0)
-    : 30;
+  const handleSpecialtyChange = (newSpec: SpecialtyCategory) => {
+    setSpecialty(newSpec);
+    const matching = DENTAL_TREATMENTS.filter((t) => t.specialty === newSpec);
+    if (matching.length > 0) {
+      setTreatmentInterest(matching[0].name);
+    }
+  };
 
-  // Handle WhatsApp Request Generation
   const handleSubmitBooking = (e: React.FormEvent) => {
     e.preventDefault();
     if (!patientName || !patientPhone || !acceptedPrivacy) return;
-
     setSubmittedModal(true);
   };
 
   const handleSendWhatsAppBooking = () => {
-    const doctorObj = DOCTOR_PROFILES.find(d => d.id === preferredDoctorId);
-    const doctorName = doctorObj ? doctorObj.name : 'Indistinto / Evaluación disponible';
+    const doctorObj = DOCTOR_PROFILES.find((d) => d.id === preferredDoctorId);
+    const doctorName = doctorObj ? doctorObj.name : 'Cualquier especialista disponible';
 
-    let treatmentSummaryText = '';
-    if (selectedTreatments.length > 0) {
-      treatmentSummaryText = selectedTreatments
-        .map(st => `• ${st.treatment.name} (x${st.quantity}) - $${st.subtotalUSD} USD`)
-        .join('%0A');
-    } else {
-      const selectedManual = DENTAL_TREATMENTS.find(t => t.id === manualTreatmentId);
-      treatmentSummaryText = `• ${selectedManual?.name || 'Consulta Odontológica'}`;
-    }
-
-    const message = `*SOLICITUD DE CITA EN DEMOSTRACIÓN - CLÍNICA DENTAL MODERNA*%0A%0A` +
+    const message =
+      `*SOLICITUD DE CITA Y COTIZACIÓN (DEMOSTRACIÓN) - CLÍNICA DENTAL MODERNA*%0A%0A` +
       `*Paciente:* ${encodeURIComponent(patientName)}%0A` +
       `*Teléfono:* ${encodeURIComponent(patientPhone)}%0A` +
       (patientEmail ? `*Correo:* ${encodeURIComponent(patientEmail)}%0A` : '') +
+      `*Especialidad:* ${encodeURIComponent(specialty)}%0A` +
+      `*Tratamiento de interés:* ${encodeURIComponent(treatmentInterest)}%0A` +
       `*Fecha solicitada:* ${selectedDate}%0A` +
       `*Horario preferido:* ${selectedTimeSlot}%0A` +
-      `*Especialista:* ${encodeURIComponent(doctorName)}%0A%0A` +
-      `*Tratamientos seleccionados:*%0A${treatmentSummaryText}%0A%0A` +
-      `*Presupuesto Estimado:* $${totalEstimatedUSD} USD%0A` +
+      `*Especialista:* ${encodeURIComponent(doctorName)}%0A` +
       (notes ? `*Motivo/Notas:* ${encodeURIComponent(notes)}%0A` : '') +
       `%0A_Solicitud enviada desde demostración comercial web._`;
 
@@ -114,31 +111,71 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({
   return (
     <section id="reserva" className="py-20 bg-[#FAF9F6] text-[#41474D]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-14">
           <span className="text-xs font-bold text-[#C5A46D] uppercase tracking-widest">
-            SISTEMA DE RESERVAS ONLINE
+            AGENDA Y SOLICITUD DE COTIZACIÓN
           </span>
           <h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-[#10283F]">
             AGENDA TU PRÓXIMA VISITA DENTAL.
           </h2>
           <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-            Selecciona el día, horario y especialista de tu preferencia. Tus tratamientos cotizados se sincronizan automáticamente con tu solicitud de reserva.
+            Selecciona la especialidad, el tratamiento que deseas cotizar o evaluar, la fecha y el horario de tu preferencia.
           </p>
         </div>
 
         {/* Booking Container */}
         <div className="bg-white border border-[#E8E9E7] rounded-2xl shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-12">
-          
+
           {/* Form Side - Left 7 Cols */}
           <form onSubmit={handleSubmitBooking} className="lg:col-span-7 p-6 sm:p-8 lg:p-10 space-y-8">
-            
-            {/* Step 1: Select Date */}
+
+            {/* Step 1: Select Specialty & Treatment */}
+            <div className="space-y-4">
+              <label className="text-xs font-bold text-[#10283F] uppercase tracking-wider flex items-center gap-2">
+                <Stethoscope className="w-4 h-4 text-[#C5A46D]" />
+                <span>1. Especialidad y Tratamiento a Cotizar o Evaluar</span>
+              </label>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-gray-600 block">Especialidad</label>
+                  <select
+                    value={specialty}
+                    onChange={(e) => handleSpecialtyChange(e.target.value as SpecialtyCategory)}
+                    className="w-full bg-[#FAF9F6] border border-[#E8E9E7] text-xs font-medium rounded-lg p-3 text-[#10283F] focus:outline-none focus:border-[#C5A46D]"
+                  >
+                    {SPECIALTY_CAROUSEL_ITEMS.map((item) => (
+                      <option key={item.id} value={item.specialty}>
+                        {item.specialty}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-gray-600 block">Tratamiento de Interés</label>
+                  <select
+                    value={treatmentInterest}
+                    onChange={(e) => setTreatmentInterest(e.target.value)}
+                    className="w-full bg-[#FAF9F6] border border-[#E8E9E7] text-xs font-medium rounded-lg p-3 text-[#10283F] focus:outline-none focus:border-[#C5A46D]"
+                  >
+                    {treatmentsForSpecialty.map((t) => (
+                      <option key={t.id} value={t.name}>
+                        {t.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Step 2: Select Date */}
             <div className="space-y-3">
               <label className="text-xs font-bold text-[#10283F] uppercase tracking-wider flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-[#C5A46D]" />
-                <span>1. Selecciona Fecha de Cita</span>
+                <span>2. Selecciona Fecha de Cita</span>
               </label>
 
               <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
@@ -161,11 +198,11 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({
               </div>
             </div>
 
-            {/* Step 2: Select Time Slot */}
-            <div className="space-y-3">
+            {/* Step 3: Select Time Slot & Professional */}
+            <div className="space-y-4">
               <label className="text-xs font-bold text-[#10283F] uppercase tracking-wider flex items-center gap-2">
                 <Clock className="w-4 h-4 text-[#C5A46D]" />
-                <span>2. Horario Preferido</span>
+                <span>3. Horario Preferido y Profesional</span>
               </label>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -184,50 +221,28 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({
                   </button>
                 ))}
               </div>
-            </div>
 
-            {/* Step 3: Professional Preference & Manual treatment if cotizador empty */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-[#10283F] uppercase tracking-wider block">
-                  Profesional de preferencia
-                </label>
+              <div className="space-y-1.5 pt-2">
+                <label className="text-xs font-medium text-gray-600 block">Profesional de preferencia (Opcional)</label>
                 <select
                   value={preferredDoctorId}
                   onChange={(e) => setPreferredDoctorId(e.target.value)}
                   className="w-full bg-[#FAF9F6] border border-[#E8E9E7] text-xs font-medium rounded-lg p-3 text-[#10283F] focus:outline-none focus:border-[#C5A46D]"
                 >
                   <option value="">Cualquier especialista disponible</option>
-                  {DOCTOR_PROFILES.map(doc => (
-                    <option key={doc.id} value={doc.id}>{doc.name} ({doc.specialty})</option>
+                  {DOCTOR_PROFILES.map((doc) => (
+                    <option key={doc.id} value={doc.id}>
+                      {doc.name} ({doc.specialty})
+                    </option>
                   ))}
                 </select>
               </div>
-
-              {selectedTreatments.length === 0 && (
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-[#10283F] uppercase tracking-wider block">
-                    Tratamiento Principal
-                  </label>
-                  <select
-                    value={manualTreatmentId}
-                    onChange={(e) => setManualTreatmentId(e.target.value)}
-                    className="w-full bg-[#FAF9F6] border border-[#E8E9E7] text-xs font-medium rounded-lg p-3 text-[#10283F] focus:outline-none focus:border-[#C5A46D]"
-                  >
-                    {DENTAL_TREATMENTS.map(t => (
-                      <option key={t.id} value={t.id}>{t.name} — ${t.priceUSD} USD</option>
-                    ))}
-                  </select>
-                </div>
-              )}
-
             </div>
 
             {/* Step 4: Patient Personal Details */}
             <div className="space-y-4 pt-4 border-t border-[#E8E9E7]">
               <span className="text-xs font-bold text-[#10283F] uppercase tracking-wider block">
-                3. Datos del Paciente
+                4. Datos del Paciente
               </span>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -285,7 +300,7 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({
                       type="text"
                       value={notes}
                       onChange={(e) => setNotes(e.target.value)}
-                      placeholder="Ej. Sensibilidad dental, consulta general..."
+                      placeholder="Ej. Solicitud de cotización, revisión..."
                       className="w-full pl-9 pr-3 py-2.5 bg-[#FAF9F6] border border-[#E8E9E7] text-xs rounded-lg text-[#10283F] focus:outline-none focus:border-[#C5A46D]"
                     />
                   </div>
@@ -311,7 +326,7 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({
                   >
                     política de privacidad
                   </button>{' '}
-                  y entiendo que esta es una solicitud de cita de demostración comercial.
+                  y entiendo que esta es una solicitud de cita y cotización de demostración comercial.
                 </label>
               </div>
 
@@ -323,85 +338,60 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({
                 <CheckCircle2 className="w-4 h-4 text-[#C5A46D]" />
                 <span>SOLICITAR MI CITA AHORA</span>
               </button>
-
             </div>
-
           </form>
 
           {/* Summary Column - Right 5 Cols */}
           <div className="lg:col-span-5 bg-[#10283F] text-white p-6 sm:p-8 lg:p-10 flex flex-col justify-between border-t lg:border-t-0 lg:border-l border-[#C5A46D]/30 space-y-6">
-            
             <div className="space-y-6">
               <div className="border-b border-white/10 pb-4">
                 <span className="text-[11px] text-[#C5A46D] uppercase font-bold tracking-widest">RESUMEN DE RESERVA</span>
                 <h3 className="font-serif-luxury text-xl font-bold text-white mt-1">Detalles de tu Solicitud</h3>
               </div>
 
-              {/* Synchronized Cotizador Items */}
+              {/* Selected Treatment Summary */}
               <div className="space-y-3">
-                <span className="text-xs font-semibold text-gray-300 block">Tratamientos Seleccionados:</span>
-                
-                {selectedTreatments.length > 0 ? (
-                  <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
-                    {selectedTreatments.map(st => (
-                      <div key={st.treatment.id} className="p-3 rounded-lg bg-white/5 border border-white/10 flex justify-between items-center text-xs">
-                        <div>
-                          <span className="font-bold text-white block">{st.treatment.name}</span>
-                          <span className="text-[10px] text-gray-400">Cant: {st.quantity} unidad(es)</span>
-                        </div>
-                        <span className="font-bold text-[#C5A46D]">${st.subtotalUSD} USD</span>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="p-3 rounded-lg bg-white/5 border border-white/10 text-xs text-gray-300">
-                    <span className="font-bold text-white block">
-                      {DENTAL_TREATMENTS.find(t => t.id === manualTreatmentId)?.name || 'Consulta Odontológica'}
-                    </span>
-                    <span className="text-[10px] text-[#C5A46D]">
-                      ${DENTAL_TREATMENTS.find(t => t.id === manualTreatmentId)?.priceUSD || 35} USD
-                    </span>
-                  </div>
-                )}
+                <span className="text-xs font-semibold text-gray-300 block">Motivo / Especialidad Seleccionada:</span>
+                <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1.5 text-xs">
+                  <span className="text-[10px] font-bold text-[#C5A46D] uppercase tracking-wider block">
+                    {specialty}
+                  </span>
+                  <span className="font-bold text-white text-sm block">{treatmentInterest}</span>
+                </div>
               </div>
 
               {/* Date & Time Summary */}
-              <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-2 text-xs">
-                <div className="flex justify-between">
+              <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-2.5 text-xs">
+                <div className="flex justify-between gap-2">
                   <span className="text-gray-400">Fecha solicitada:</span>
                   <span className="font-bold text-white">{selectedDate || 'Por seleccionar'}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Horario:</span>
+                <div className="flex justify-between gap-2">
+                  <span className="text-gray-400">Horario preferido:</span>
                   <span className="font-bold text-[#C5A46D]">{selectedTimeSlot}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Duración estimada:</span>
-                  <span className="font-bold text-white">{totalEstimatedDurationMinutes} min aprox.</span>
-                </div>
-                <div className="flex justify-between pt-2 border-t border-white/10 font-bold text-sm">
-                  <span>Presupuesto Estimado:</span>
-                  <span className="text-[#C5A46D]">${totalEstimatedUSD} USD</span>
+                <div className="flex justify-between gap-2 pt-2 border-t border-white/10">
+                  <span className="text-gray-400">Profesional:</span>
+                  <span className="font-bold text-white text-right">
+                    {DOCTOR_PROFILES.find((d) => d.id === preferredDoctorId)?.name || 'Cualquier especialista'}
+                  </span>
                 </div>
               </div>
-
             </div>
 
             {/* Mandatory Demonstration Disclaimer */}
             <div className="p-4 rounded-xl bg-black/40 border border-[#C5A46D]/30 space-y-2 text-xs text-gray-300">
               <div className="flex items-center gap-1.5 text-[#C5A46D] font-bold">
                 <Info className="w-4 h-4 shrink-0" />
-                <span>Cita de Demostración</span>
+                <span>Cita y Cotización de Demostración</span>
               </div>
               <p className="text-[11px] leading-relaxed">
-                Esta es una solicitud de cita de demostración. La fecha y el horario requieren confirmación final de la clínica.
+                Esta es una solicitud de cita de demostración. La fecha, el horario y la cotización definitiva requieren confirmación y valoración clínica de la clínica.
               </p>
             </div>
-
           </div>
 
         </div>
-
       </div>
 
       {/* Confirmation Modal */}
@@ -421,8 +411,9 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({
 
             <div className="bg-white/5 p-4 rounded-xl border border-white/10 text-xs text-left space-y-2">
               <p><strong>Paciente:</strong> {patientName}</p>
+              <p><strong>Especialidad:</strong> {specialty}</p>
+              <p><strong>Tratamiento:</strong> {treatmentInterest}</p>
               <p><strong>Fecha / Hora:</strong> {selectedDate} a las {selectedTimeSlot}</p>
-              <p><strong>Presupuesto estimado:</strong> ${totalEstimatedUSD} USD</p>
             </div>
 
             <div className="space-y-3 pt-2">
@@ -436,7 +427,7 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({
 
               <button
                 onClick={() => setSubmittedModal(false)}
-                className="w-full py-2.5 text-xs text-gray-300 hover:text-white underline"
+                className="w-full py-2.5 text-xs text-gray-300 hover:text-white underline cursor-pointer"
               >
                 Cerrar ventana
               </button>

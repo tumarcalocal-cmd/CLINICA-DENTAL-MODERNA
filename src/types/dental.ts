@@ -1,5 +1,4 @@
-export type SpecialtyCategory = 
-  | 'TODAS'
+export type SpecialtyCategory =
   | 'ODONTOLOGÍA GENERAL'
   | 'ESTÉTICA DENTAL'
   | 'ORTODONCIA'
@@ -7,46 +6,26 @@ export type SpecialtyCategory =
   | 'ENDODONCIA'
   | 'ODONTOPEDIATRÍA';
 
-export interface DentalTreatment {
+export interface SpecialtyTreatmentDetail {
+  id: string;
+  name: string;
+  description: string;
+}
+
+export interface SpecialtyCarouselItem {
+  id: string;
+  specialty: SpecialtyCategory;
+  subtitle: string;
+  overview: string;
+  image: string;
+  imageAlt: string;
+  treatments: SpecialtyTreatmentDetail[];
+}
+
+export interface DentalTreatmentOption {
   id: string;
   name: string;
   specialty: SpecialtyCategory;
-  description: string;
-  indicativeDuration: string;
-  priceUSD: number;
-  image: string;
-  allowsQuantity?: boolean;
-  unitLabel?: string;
-  recommended?: boolean;
-}
-
-export interface SelectedTreatment {
-  treatment: DentalTreatment;
-  quantity: number;
-  subtotalUSD: number;
-}
-
-export interface AdditionalService {
-  id: string;
-  name: string;
-  description: string;
-  priceUSD: number;
-  selected: boolean;
-}
-
-export interface AppointmentBookingRequest {
-  selectedTreatments: SelectedTreatment[];
-  additionalServices: AdditionalService[];
-  totalEstimatedUSD: number;
-  totalEstimatedDurationMinutes: number;
-  preferredDoctorId?: string;
-  date: string;
-  timeSlot: string;
-  patientName: string;
-  patientPhone: string;
-  patientEmail?: string;
-  notes?: string;
-  acceptedPrivacy: boolean;
 }
 
 export interface DoctorProfile {

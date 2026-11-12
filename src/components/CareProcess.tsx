@@ -1,19 +1,19 @@
 import React from 'react';
-import { Search, Calculator, Calendar, Send } from 'lucide-react';
+import { Search, FileText, Calendar, Send } from 'lucide-react';
 
 export const CareProcess: React.FC = () => {
   const steps = [
     {
       number: '01',
       title: 'Explora Tratamientos',
-      description: 'Consulta nuestro catálogo completo de especialidades y opciones clínicas.',
+      description: 'Recorre nuestras especialidades odontológicas y conoce cada procedimiento.',
       icon: Search
     },
     {
       number: '02',
-      title: 'Presupuesto Orientativo',
-      description: 'Calcula en tiempo real un estimado transparente para tus necesidades.',
-      icon: Calculator
+      title: 'Solicita tu Cotización',
+      description: 'Indica el tratamiento de tu interés para recibir orientación personalizada.',
+      icon: FileText
     },
     {
       number: '03',

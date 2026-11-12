@@ -1,293 +1,202 @@
-import { DentalTreatment, AdditionalService, DoctorProfile, FAQItem, ReviewItem, SpecialtyCategory } from '../types/dental';
+import {
+  SpecialtyCarouselItem,
+  DentalTreatmentOption,
+  DoctorProfile,
+  FAQItem,
+  ReviewItem,
+} from '../types/dental';
 
-export const SPECIALTY_CATEGORIES: SpecialtyCategory[] = [
-  'TODAS',
-  'ODONTOLOGÍA GENERAL',
-  'ESTÉTICA DENTAL',
-  'ORTODONCIA',
-  'IMPLANTOLOGÍA Y PRÓTESIS',
-  'ENDODONCIA',
-  'ODONTOPEDIATRÍA'
-];
-
-export const DENTAL_TREATMENTS: DentalTreatment[] = [
-  // Odontología General
+export const SPECIALTY_CAROUSEL_ITEMS: SpecialtyCarouselItem[] = [
   {
-    id: 'gen-01',
-    name: 'Consulta Odontológica',
+    id: 'spec-general',
     specialty: 'ODONTOLOGÍA GENERAL',
-    description: 'Diagnóstico general inicial, revisión bucodental completa y plan preventivo.',
-    indicativeDuration: '30 min',
-    priceUSD: 35,
-    image: '/src/assets/images/facility_operatory_1793080046191.jpg',
-    recommended: true
+    subtitle: 'Prevención, diagnóstico y salud bucal integral',
+    overview:
+      'Cuidamos la salud base de tus dientes y encías mediante evaluaciones clínicas detalladas, profilaxis profesional y tratamientos restauradores conservadores.',
+    image: '/src/assets/images/specialty_general_dentistry_1794512171430.jpg',
+    imageAlt: 'Odontóloga latinoamericana realizando revisión dental general en clínica de Panamá',
+    treatments: [
+      {
+        id: 'gen-01',
+        name: 'Consulta Odontológica y Evaluación Dental',
+        description: 'Revisión bucodental completa, evaluación de encías, oclusión y plan preventivo personalizado.',
+      },
+      {
+        id: 'gen-02',
+        name: 'Limpieza Dental Profesional (Profilaxis)',
+        description: 'Eliminación profunda de placa bacteriana, sarro y pulido dental para prevenir inflamación gingival.',
+      },
+      {
+        id: 'gen-03',
+        name: 'Restauraciones y Empastes Estéticos',
+        description: 'Obturaciones con resinas fotocurables del tono natural de tus dientes para reparar caries o desgaste.',
+      },
+      {
+        id: 'gen-04',
+        name: 'Extracciones Dentales Indicadas',
+        description: 'Procedimiento cuidadoso bajo anestesia local cuando una pieza dental no puede ser conservada.',
+      },
+    ],
   },
   {
-    id: 'gen-02',
-    name: 'Evaluación Dental Integral',
-    specialty: 'ODONTOLOGÍA GENERAL',
-    description: 'Examen clínico exhaustivo con diagnóstico de encías, caries y oclusión.',
-    indicativeDuration: '45 min',
-    priceUSD: 40,
-    image: '/src/assets/images/hero_dental_clinic_1793080046089.jpg'
-  },
-  {
-    id: 'gen-03',
-    name: 'Limpieza Dental Profesional (Profilaxis)',
-    specialty: 'ODONTOLOGÍA GENERAL',
-    description: 'Eliminación de placa bacteriana, sarro y pulido dental para prevenir la gingivitis.',
-    indicativeDuration: '45 min',
-    priceUSD: 60,
-    image: '/src/assets/images/facility_operatory_1793080046191.jpg',
-    recommended: true
-  },
-  {
-    id: 'gen-04',
-    name: 'Restauraciones y Empastes',
-    specialty: 'ODONTOLOGÍA GENERAL',
-    description: 'Obturaciones en resina fotocurable del color natural de tus dientes.',
-    indicativeDuration: '60 min',
-    priceUSD: 75,
-    allowsQuantity: true,
-    unitLabel: 'piezas',
-    image: '/src/assets/images/facility_operatory_1793080046191.jpg'
-  },
-  {
-    id: 'gen-05',
-    name: 'Extracciones Dentales (Indicadas)',
-    specialty: 'ODONTOLOGÍA GENERAL',
-    description: 'Procedimiento quirúrgico menor bajo anestesia para dientes no restaurables.',
-    indicativeDuration: '60 min',
-    priceUSD: 90,
-    allowsQuantity: true,
-    unitLabel: 'piezas',
-    image: '/src/assets/images/facility_operatory_1793080046191.jpg'
-  },
-
-  // Estética Dental
-  {
-    id: 'est-01',
-    name: 'Blanqueamiento Dental Profesional',
+    id: 'spec-estetica',
     specialty: 'ESTÉTICA DENTAL',
-    description: 'Tratamiento aclarador clínico de alta eficacia que recupera el brillo natural.',
-    indicativeDuration: '60 min',
-    priceUSD: 220,
+    subtitle: 'Armonía facial, luminosidad y diseño de sonrisa',
+    overview:
+      'Combinamos planificación digital y materiales de alta estética para mejorar el color, la forma y la simetría dental conservando una apariencia natural.',
     image: '/src/assets/images/treatment_aesthetics_1793080046514.jpg',
-    recommended: true
+    imageAlt: 'Especialista latinoamericano presentando diseño digital de sonrisa a paciente en Panamá',
+    treatments: [
+      {
+        id: 'est-01',
+        name: 'Blanqueamiento Dental Profesional',
+        description: 'Aclaramiento clínico controlado para devolver luminosidad y frescura a tu sonrisa de manera segura.',
+      },
+      {
+        id: 'est-02',
+        name: 'Diseño de Sonrisa Digital',
+        description: 'Planificación personalizada asistida por análisis fotográfico y digital antes de iniciar cualquier procedimiento.',
+      },
+      {
+        id: 'est-03',
+        name: 'Carillas Dentales',
+        description: 'Láminas ultrafinas de porcelana o resina diseñadas para perfeccionar contorno, alineación visual y tono.',
+      },
+      {
+        id: 'est-04',
+        name: 'Restauraciones Estéticas',
+        description: 'Reconstrucción anatómica de bordes fracturados, espacios interdentales o desgastes visibles.',
+      },
+    ],
   },
   {
-    id: 'est-02',
-    name: 'Diseño de Sonrisa Digital',
-    specialty: 'ESTÉTICA DENTAL',
-    description: 'Planificación estética personalizada mediante software digital 3D avanzado.',
-    indicativeDuration: '90 min',
-    priceUSD: 450,
-    image: '/src/assets/images/treatment_aesthetics_1793080046514.jpg',
-    recommended: true
-  },
-  {
-    id: 'est-03',
-    name: 'Carillas Dentales de Porcelana / Resina',
-    specialty: 'ESTÉTICA DENTAL',
-    description: 'Láminas ultrafinas diseñadas para corregir forma, tono y simetría dental.',
-    indicativeDuration: '60 min',
-    priceUSD: 280,
-    allowsQuantity: true,
-    unitLabel: 'carillas',
-    image: '/src/assets/images/treatment_aesthetics_1793080046514.jpg'
-  },
-  {
-    id: 'est-04',
-    name: 'Restauraciones Estéticas',
-    specialty: 'ESTÉTICA DENTAL',
-    description: 'Reconstrucción anatómica de alta precisión para dientes bordes o desgastados.',
-    indicativeDuration: '60 min',
-    priceUSD: 110,
-    allowsQuantity: true,
-    unitLabel: 'piezas',
-    image: '/src/assets/images/treatment_aesthetics_1793080046514.jpg'
-  },
-
-  // Ortodoncia
-  {
-    id: 'ort-01',
-    name: 'Evaluación de Ortodoncia',
+    id: 'spec-ortodoncia',
     specialty: 'ORTODONCIA',
-    description: 'Análisis ortodóncico completo de alineación dental y mordida funcional.',
-    indicativeDuration: '45 min',
-    priceUSD: 45,
-    image: '/src/assets/images/treatment_orthodontics_1793080046615.jpg'
-  },
-  {
-    id: 'ort-02',
-    name: 'Brackets Convencionales',
-    specialty: 'ORTODONCIA',
-    description: 'Sistema metálico de alta precisión para corregir maloclusiones y apiñamiento.',
-    indicativeDuration: '60 min',
-    priceUSD: 850,
-    image: '/src/assets/images/treatment_orthodontics_1793080046615.jpg'
-  },
-  {
-    id: 'ort-03',
-    name: 'Ortodoncia Estética (Cerámicos / Zafiro)',
-    specialty: 'ORTODONCIA',
-    description: 'Brackets discretos traslúcidos del tono del diente para alta estética.',
-    indicativeDuration: '60 min',
-    priceUSD: 1200,
+    subtitle: 'Alineación dental y mordida funcional para cada etapa',
+    overview:
+      'Evaluamos y corregimos la posición dental y la mordida con alternativas convencionales, estéticas o alineadores transparentes adaptados a tu estilo de vida.',
     image: '/src/assets/images/treatment_orthodontics_1793080046615.jpg',
-    recommended: true
+    imageAlt: 'Ortodoncista latinoamericana explicando alineadores transparentes y modelo 3D a paciente',
+    treatments: [
+      {
+        id: 'ort-01',
+        name: 'Evaluación de Ortodoncia',
+        description: 'Estudio clínico de alineación dental, mordida y planificación integral para definir el sistema ideal.',
+      },
+      {
+        id: 'ort-02',
+        name: 'Brackets Convencionales',
+        description: 'Sistema clásico de alta precisión indicado para corregir apiñamientos y maloclusiones de todo grado.',
+      },
+      {
+        id: 'ort-03',
+        name: 'Ortodoncia Estética',
+        description: 'Brackets cerámicos o de zafiro translúcidos que se mimetizan con el esmalte natural durante el tratamiento.',
+      },
+      {
+        id: 'ort-04',
+        name: 'Evaluación para Alineadores Transparentes',
+        description: 'Valoración clínica y escaneo digital 3D para determinar la viabilidad de férulas removibles invisibles.',
+      },
+    ],
   },
   {
-    id: 'ort-04',
-    name: 'Evaluación para Alineadores Transparentes',
-    specialty: 'ORTODONCIA',
-    description: 'Escaneo intraoral 3D para planificar tratamiento con férulas invisibles.',
-    indicativeDuration: '45 min',
-    priceUSD: 60,
-    image: '/src/assets/images/treatment_orthodontics_1793080046615.jpg'
-  },
-
-  // Implantología y Prótesis
-  {
-    id: 'imp-01',
-    name: 'Evaluación para Implantes Dentales',
+    id: 'spec-implantologia',
     specialty: 'IMPLANTOLOGÍA Y PRÓTESIS',
-    description: 'Valoración ósea y planificación tomográfica para reemplazo fijo de dientes.',
-    indicativeDuration: '45 min',
-    priceUSD: 65,
-    image: '/src/assets/images/facility_operatory_1793080046191.jpg'
+    subtitle: 'Recuperación fija, funcional y estética de piezas dentales',
+    overview:
+      'Devolvemos la función masticatoria y la estética dental mediante soluciones protésicas e implantes planificados con precisión clínica.',
+    image: '/src/assets/images/specialty_implantology_1794512171468.jpg',
+    imageAlt: 'Especialista en implantología explicando modelo de implante y corona dental en Panamá',
+    treatments: [
+      {
+        id: 'imp-01',
+        name: 'Evaluación para Implantes Dentales',
+        description: 'Valoración ósea y estudio radiográfico personalizado para planificar el reemplazo fijo de piezas ausentes.',
+      },
+      {
+        id: 'imp-02',
+        name: 'Coronas Dentales',
+        description: 'Restauraciones fijas en zirconia o porcelana diseñadas para proteger y devolver anatomía natural al diente.',
+      },
+      {
+        id: 'imp-03',
+        name: 'Prótesis Dentales',
+        description: 'Opciones protésicas fijas o removibles ajustadas para restaurar comodidad al masticar y hablar.',
+      },
+      {
+        id: 'imp-04',
+        name: 'Rehabilitación Oral',
+        description: 'Plan integral multidisciplinario orientado a restablecer la armonía dental, funcional y oclusal.',
+      },
+    ],
   },
   {
-    id: 'imp-02',
-    name: 'Coronas Dentales (Zirconia / Porcelana)',
-    specialty: 'IMPLANTOLOGÍA Y PRÓTESIS',
-    description: 'Fundas fijas biocompatibles de máxima resistencia y apariencia natural.',
-    indicativeDuration: '60 min',
-    priceUSD: 380,
-    allowsQuantity: true,
-    unitLabel: 'coronas',
-    image: '/src/assets/images/facility_operatory_1793080046191.jpg'
-  },
-  {
-    id: 'imp-03',
-    name: 'Prótesis Dentales Removibles o Fijas',
-    specialty: 'IMPLANTOLOGÍA Y PRÓTESIS',
-    description: 'Soluciones protésicas para la recuperación de múltiples piezas ausentes.',
-    indicativeDuration: '90 min',
-    priceUSD: 650,
-    image: '/src/assets/images/facility_operatory_1793080046191.jpg'
-  },
-  {
-    id: 'imp-04',
-    name: 'Rehabilitación Oral Completa',
-    specialty: 'IMPLANTOLOGÍA Y PRÓTESIS',
-    description: 'Tratamiento multidisciplinario para restaurar la dimensión vertical y masticación.',
-    indicativeDuration: '120 min',
-    priceUSD: 1400,
-    image: '/src/assets/images/hero_dental_clinic_1793080046089.jpg'
-  },
-
-  // Endodoncia
-  {
-    id: 'end-01',
-    name: 'Evaluación de Dolor Dental',
+    id: 'spec-endodoncia',
     specialty: 'ENDODONCIA',
-    description: 'Diagnóstico de pulpitis, sensibilidad aguda e infecciones de raíz.',
-    indicativeDuration: '30 min',
-    priceUSD: 40,
-    image: '/src/assets/images/facility_operatory_1793080046191.jpg'
+    subtitle: 'Conservación dental y alivio del dolor agudo',
+    overview:
+      'Abordamos afecciones del tejido pulpar con protocolos precisos orientados a aliviar molestias y preservar tus piezas dentales naturales.',
+    image: '/src/assets/images/specialty_endodontics_1794512172250.jpg',
+    imageAlt: 'Especialista en endodoncia analizando radiografía dental digital en consultorio de Panamá',
+    treatments: [
+      {
+        id: 'end-01',
+        name: 'Evaluación de Dolor Dental',
+        description: 'Diagnóstico oportuno de sensibilidad severa, pulpitis o infecciones radiculares mediante examen clínico.',
+      },
+      {
+        id: 'end-02',
+        name: 'Tratamiento de Conductos (Endodoncia)',
+        description: 'Desinfección y sellado hermético de los conductos radiculares para salvar la pieza dental sin dolor.',
+      },
+      {
+        id: 'end-03',
+        name: 'Restauración Posterior al Tratamiento',
+        description: 'Reconstrucción estructural posterior para proteger el diente tratado y garantizar su resistencia.',
+      },
+    ],
   },
   {
-    id: 'end-02',
-    name: 'Tratamiento de Conductos (Endodoncia)',
-    specialty: 'ENDODONCIA',
-    description: 'Limpieza y sellado del nervio dental para conservar la pieza natural sin dolor.',
-    indicativeDuration: '90 min',
-    priceUSD: 290,
-    allowsQuantity: true,
-    unitLabel: 'conductos',
-    image: '/src/assets/images/facility_operatory_1793080046191.jpg'
-  },
-  {
-    id: 'end-03',
-    name: 'Restauración Posterior al Tratamiento',
-    specialty: 'ENDODONCIA',
-    description: 'Reconstrucción con perno/resina para reforzar el diente tratado endodónticamente.',
-    indicativeDuration: '60 min',
-    priceUSD: 120,
-    image: '/src/assets/images/facility_operatory_1793080046191.jpg'
-  },
-
-  // Odontopediatría
-  {
-    id: 'ped-01',
-    name: 'Evaluación Dental Infantil',
+    id: 'spec-odontopediatria',
     specialty: 'ODONTOPEDIATRÍA',
-    description: 'Atención especializada, cercana y sin dolor para niños y adolescentes.',
-    indicativeDuration: '30 min',
-    priceUSD: 35,
+    subtitle: 'Experiencias dentales positivas para niños y adolescentes',
+    overview:
+      'Acompañamos el crecimiento dental de los más pequeños en un entorno amable, paciente y educativo que fomenta hábitos saludables desde temprana edad.',
     image: '/src/assets/images/treatment_pediatric_1793080047149.jpg',
-    recommended: true
+    imageAlt: 'Odontopediatra latinoamericana enseñando higiene dental a una niña en consultorio moderno',
+    treatments: [
+      {
+        id: 'ped-01',
+        name: 'Evaluación Dental Infantil',
+        description: 'Revisión periódica amigable del desarrollo dental, erupción y mordida en niños y adolescentes.',
+      },
+      {
+        id: 'ped-02',
+        name: 'Prevención de Caries',
+        description: 'Aplicación de barniz de flúor y sellantes protectores para fortalecer el esmalte dental infantil.',
+      },
+      {
+        id: 'ped-03',
+        name: 'Limpieza Dental Infantil',
+        description: 'Profilaxis suave adaptada al confort del niño para mantener encías sanas y dientes libres de placa.',
+      },
+      {
+        id: 'ped-04',
+        name: 'Educación en Higiene Bucal',
+        description: 'Orientación lúdica y práctica para padres e hijos sobre técnica de cepillado y cuidado diario.',
+      },
+    ],
   },
-  {
-    id: 'ped-02',
-    name: 'Prevención de Caries e Fluorización',
-    specialty: 'ODONTOPEDIATRÍA',
-    description: 'Aplicación de flúor protector y sellantes de fosas para proteger el esmalte.',
-    indicativeDuration: '30 min',
-    priceUSD: 45,
-    image: '/src/assets/images/treatment_pediatric_1793080047149.jpg'
-  },
-  {
-    id: 'ped-03',
-    name: 'Limpieza Dental Infantil',
-    specialty: 'ODONTOPEDIATRÍA',
-    description: 'Remoción suave de manchas y placa adaptada al confort del pequeño paciente.',
-    indicativeDuration: '30 min',
-    priceUSD: 50,
-    image: '/src/assets/images/treatment_pediatric_1793080047149.jpg'
-  },
-  {
-    id: 'ped-04',
-    name: 'Educación en Higiene Bucal',
-    specialty: 'ODONTOPEDIATRÍA',
-    description: 'Sesión didáctica e interactiva para inculcar hábitos saludables de cepillado.',
-    indicativeDuration: '30 min',
-    priceUSD: 25,
-    image: '/src/assets/images/treatment_pediatric_1793080047149.jpg'
-  }
 ];
 
-export const INITIAL_ADDITIONAL_SERVICES: AdditionalService[] = [
-  {
-    id: 'add-01',
-    name: 'Radiografía Panorámica Digital',
-    description: 'Estudio radiográfico de diagnóstico integral en alta definición.',
-    priceUSD: 25,
-    selected: false
-  },
-  {
-    id: 'add-02',
-    name: 'Anestesia Digital Computarizada',
-    description: 'Administración gradual de anestesia sin dolor ni presión tisular.',
-    priceUSD: 20,
-    selected: false
-  },
-  {
-    id: 'add-03',
-    name: 'Kit Premium Post-Tratamiento',
-    description: 'Cepillo especializado, enjuague antiséptico e hilo dental ortodóntico.',
-    priceUSD: 18,
-    selected: false
-  },
-  {
-    id: 'add-04',
-    name: 'Sedación Consciente Relajante',
-    description: 'Opción indicada para pacientes con ansiedad o fobia dental.',
-    priceUSD: 75,
-    selected: false
-  }
-];
+export const DENTAL_TREATMENTS: DentalTreatmentOption[] = SPECIALTY_CAROUSEL_ITEMS.flatMap((item) =>
+  item.treatments.map((t) => ({
+    id: t.id,
+    name: t.name,
+    specialty: item.specialty,
+  }))
+);
 
 export const DOCTOR_PROFILES: DoctorProfile[] = [
   {
@@ -297,7 +206,7 @@ export const DOCTOR_PROFILES: DoctorProfile[] = [
     specialty: 'Estética Dental & Odontología General',
     description: 'Enfocada en diseño de sonrisa, carillas de porcelana y procedimientos de mínima invasión.',
     image: '/src/assets/images/doctor_female_dentist_1793080048057.jpg',
-    scheduleDays: 'Lunes a Jueves'
+    scheduleDays: 'Lunes a Jueves',
   },
   {
     id: 'doc-02',
@@ -306,7 +215,7 @@ export const DOCTOR_PROFILES: DoctorProfile[] = [
     specialty: 'Ortodoncia Tradicional e Invisible',
     description: 'Experto en biomecánica ortodóncica, planificación 3D y alineamiento estético.',
     image: '/src/assets/images/doctor_male_dentist_1793080048020.jpg',
-    scheduleDays: 'Martes a Sábado'
+    scheduleDays: 'Martes a Sábado',
   },
   {
     id: 'doc-03',
@@ -315,81 +224,66 @@ export const DOCTOR_PROFILES: DoctorProfile[] = [
     specialty: 'Odontopediatría',
     description: 'Dedicada a brindar experiencias dentales positivas, lúdicas y reconfortantes para los más pequeños.',
     image: '/src/assets/images/treatment_pediatric_1793080047149.jpg',
-    scheduleDays: 'Lunes, Miércoles y Viernes'
-  }
+    scheduleDays: 'Lunes, Miércoles y Viernes',
+  },
 ];
 
 export const FAQ_ITEMS: FAQItem[] = [
   {
     id: 'faq-1',
-    question: '¿Cómo puedo reservar una cita?',
-    answer: 'Puedes solicitar tu cita seleccionando el tratamiento y la fecha/horario deseados a través de nuestro calendario interactivo o comunicándote directamente por WhatsApp. Nuestro equipo confirmará la disponibilidad a la brevedad.'
+    question: '¿Cómo puedo reservar una cita o solicitar una cotización?',
+    answer: 'Puedes seleccionar la especialidad en nuestro carrusel de tratamientos y pulsar el botón "Solicitar Cotización", o elegir directamente tu fecha y horario en nuestra agenda online o vía WhatsApp.',
   },
   {
     id: 'faq-2',
-    question: '¿Cómo funciona el cotizador dental?',
-    answer: 'El cotizador te permite seleccionar los tratamientos de tu interés y calcular un presupuesto estimado al instante. Al finalizar, puedes transferir los servicios seleccionados directamente al sistema de reserva.'
+    question: '¿Cómo se determina el presupuesto de un tratamiento?',
+    answer: 'Cada paciente presenta necesidades clínicas distintas. Por ello, los presupuestos personalizados se entregan tras conocer el motivo de consulta o luego de la evaluación odontológica presencial.',
   },
   {
     id: 'faq-3',
-    question: '¿Los precios son definitivos?',
-    answer: 'No. Los precios presentados en esta demostración son ilustrativos y orientativos. El costo definitivo depende exclusivamente de la valoración clínica, el diagnóstico por imagen y el plan de tratamiento individualizado.'
+    question: '¿Cómo sé qué tratamiento necesito exactamente?',
+    answer: 'Te recomendamos agendar una "Consulta Odontológica y Evaluación Dental". En la primera cita, el especialista examinará tu caso y te orientará sobre las mejores alternativas clínicas.',
   },
   {
     id: 'faq-4',
-    question: '¿Puedo seleccionar varios tratamientos en el presupuesto?',
-    answer: 'Sí, el cotizador te permite agregar múltiples servicios (por ejemplo, valoración, limpieza y blanqueamiento) para obtener un estimado consolidado y la duración aproximada de tu visita.'
+    question: '¿Puedo elegir el odontólogo de mi preferencia?',
+    answer: 'Sí, en el formulario de agenda puedes indicar el profesional de tu preferencia de acuerdo con la especialidad que requieras.',
   },
   {
     id: 'faq-5',
-    question: '¿Cómo sé qué tratamiento necesito exactamente?',
-    answer: 'Te recomendamos solicitar una "Consulta Odontológica" o "Evaluación Integral". En la primera cita, el especialista examinará tu caso y te guiará sobre las mejores alternativas clínicas.'
+    question: '¿Cómo se confirma la solicitud de cita?',
+    answer: 'Al completar tu solicitud en la agenda, podrás enviarla por WhatsApp para que la clínica verifique la disponibilidad y confirme tu fecha y horario final.',
   },
   {
     id: 'faq-6',
-    question: '¿Cuánto dura una consulta estándar?',
-    answer: 'La duración varía entre 30 minutos (consultas de revisión) y 60 a 90 minutos para procedimientos especializados. En la ficha de cada tratamiento se indica la duración estimativa.'
-  },
-  {
-    id: 'faq-7',
-    question: '¿Puedo elegir el odontólogo de mi preferencia?',
-    answer: 'Sí, en el formulario de reserva de cita puedes indicar el profesional de tu preferencia de acuerdo con la especialidad que requieras.'
-  },
-  {
-    id: 'faq-8',
-    question: '¿Cómo se confirma la solicitud de cita?',
-    answer: 'Al enviar tu formulario, recibirás un resumen de la solicitud en pantalla o por WhatsApp. La clínica se pondrá en contacto contigo para verificar la disponibilidad final.'
-  },
-  {
-    id: 'faq-9',
     question: '¿Qué debo hacer si tengo una urgencia dental?',
-    answer: 'Para casos de dolor agudo, trauma o inflamación repentina, se sugiere contactar directamente a la línea prioritaria por WhatsApp para coordinar una atención inmediata.'
-  }
+    answer: 'Para casos de dolor agudo, trauma o inflamación repentina, se sugiere contactar directamente por WhatsApp para coordinar una valoración prioritaria.',
+  },
 ];
 
 export const PATIENT_REVIEWS: ReviewItem[] = [
   {
     id: 'rev-1',
-    author: 'Mariana G. - Panamá',
+    author: 'Mariana G. - Ciudad de Panamá',
     treatment: 'Diseño de Sonrisa & Blanqueamiento',
     rating: 5,
     comment: 'La atención recibida superó mis expectativas. Las instalaciones son impecables y el tratamiento de blanqueamiento fue indoloro y muy natural.',
-    date: 'Hace 2 semanas'
+    date: 'Hace 2 semanas',
   },
   {
     id: 'rev-2',
     author: 'Carlos R. - Ciudad de Panamá',
     treatment: 'Ortodoncia Estética',
     rating: 5,
-    comment: 'El trato personalizado y la explicación detallada del presupuesto antes de iniciar me brindaron mucha tranquilidad. Recomendado al 100%.',
-    date: 'Hace 1 mes'
+    comment: 'El trato personalizado y la explicación detallada del plan antes de iniciar me brindaron mucha tranquilidad. Recomendado al 100%.',
+    date: 'Hace 1 mes',
   },
   {
     id: 'rev-3',
-    author: 'Patricia V. - Panamá',
+    author: 'Patricia V. - Ciudad de Panamá',
     treatment: 'Odontopediatría',
     rating: 5,
     comment: 'Excelente manejo con los niños. Mi hija asistió feliz a su primera limpieza dental sin ningún temor. Un entorno verdaderamente moderno.',
-    date: 'Hace 3 semanas'
-  }
+    date: 'Hace 3 semanas',
+  },
 ];

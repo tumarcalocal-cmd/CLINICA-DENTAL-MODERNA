@@ -3,7 +3,6 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { AboutSection } from './components/AboutSection';
 import { SpecialtiesCatalog } from './components/SpecialtiesCatalog';
-import { Cotizador } from './components/Cotizador';
 import { BookingCalendar } from './components/BookingCalendar';
 import { FacilitiesGallery } from './components/FacilitiesGallery';
 import { DentalTeam } from './components/DentalTeam';
@@ -18,24 +17,16 @@ import { TuMarcaLocalPromo } from './components/TuMarcaLocalPromo';
 import { LegalModal } from './components/LegalModal';
 import { Footer } from './components/Footer';
 
-import { DentalTreatment, SelectedTreatment, AdditionalService } from './types/dental';
-import { INITIAL_ADDITIONAL_SERVICES, DENTAL_TREATMENTS } from './data/dentalData';
+import { SpecialtyCategory } from './types/dental';
 
 export default function App() {
-  // Cotizador State
-  const [selectedTreatments, setSelectedTreatments] = useState<SelectedTreatment[]>([
-    {
-      treatment: DENTAL_TREATMENTS[0], // Pre-populate with 'Consulta Odontológica'
-      quantity: 1,
-      subtotalUSD: DENTAL_TREATMENTS[0].priceUSD,
-    }
-  ]);
-
-  const [additionalServices, setAdditionalServices] = useState<AdditionalService[]>(INITIAL_ADDITIONAL_SERVICES);
+  const [selectedSpecialty, setSelectedSpecialty] = useState<SpecialtyCategory>('ODONTOLOGÍA GENERAL');
+  const [selectedTreatmentName, setSelectedTreatmentName] = useState<string>(
+    'Consulta Odontológica y Evaluación Dental'
+  );
   const [preselectedDoctorId, setPreselectedDoctorId] = useState<string>('');
   const [legalModalTab, setLegalModalTab] = useState<'privacy' | 'terms' | 'disclaimer' | null>(null);
 
-  // Handlers
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
@@ -43,38 +34,10 @@ export default function App() {
     }
   };
 
-  const handleAddTreatmentToCotizador = (treatment: DentalTreatment) => {
-    const existingIndex = selectedTreatments.findIndex(st => st.treatment.id === treatment.id);
-    if (existingIndex > -1) {
-      const updated = [...selectedTreatments];
-      updated[existingIndex].quantity += 1;
-      updated[existingIndex].subtotalUSD = updated[existingIndex].quantity * treatment.priceUSD;
-      setSelectedTreatments(updated);
-    } else {
-      setSelectedTreatments(prev => [
-        ...prev,
-        {
-          treatment,
-          quantity: 1,
-          subtotalUSD: treatment.priceUSD,
-        }
-      ]);
-    }
-    scrollToSection('cotizador');
-  };
-
-  const handleBookTreatment = (treatment: DentalTreatment) => {
-    // Ensure treatment is in cotizador list if not present
-    const existing = selectedTreatments.find(st => st.treatment.id === treatment.id);
-    if (!existing) {
-      setSelectedTreatments(prev => [
-        ...prev,
-        {
-          treatment,
-          quantity: 1,
-          subtotalUSD: treatment.priceUSD,
-        }
-      ]);
+  const handleRequestQuote = (specialty: SpecialtyCategory, treatmentName?: string) => {
+    setSelectedSpecialty(specialty);
+    if (treatmentName) {
+      setSelectedTreatmentName(treatmentName);
     }
     scrollToSection('reserva');
   };
@@ -84,11 +47,9 @@ export default function App() {
     scrollToSection('reserva');
   };
 
-  const addedTreatmentIds = selectedTreatments.map(st => st.treatment.id);
-
   return (
     <div className="min-h-screen bg-[#FAF9F6] text-[#41474D] flex flex-col font-sans selection:bg-[#C5A46D] selection:text-white">
-      
+
       {/* 1. Header Navigation */}
       <Navbar
         onOpenBooking={() => scrollToSection('reserva')}
@@ -105,72 +66,49 @@ export default function App() {
         {/* 3. Sobre la Clínica */}
         <AboutSection />
 
-        {/* 4. Especialidades y Tratamientos */}
-        <SpecialtiesCatalog
-          onAddTreatmentToCotizador={handleAddTreatmentToCotizador}
-          onBookTreatment={handleBookTreatment}
-          addedTreatmentIds={addedTreatmentIds}
-        />
+        {/* 4. Especialidades y Tratamientos (Carrusel) */}
+        <SpecialtiesCatalog onRequestQuote={handleRequestQuote} />
 
-        {/* 5. Cotizador Interactivo */}
-        <Cotizador
-          selectedTreatments={selectedTreatments}
-          setSelectedTreatments={setSelectedTreatments}
-          additionalServices={additionalServices}
-          setAdditionalServices={setAdditionalServices}
-          onContinueToBooking={() => scrollToSection('reserva')}
-        />
-
-        {/* 6. Sistema de Reserva de Citas */}
+        {/* 5. Sistema de Reserva de Citas y Solicitud de Cotización */}
         <BookingCalendar
-          selectedTreatments={selectedTreatments}
-          additionalServices={additionalServices}
+          selectedSpecialty={selectedSpecialty}
+          selectedTreatmentName={selectedTreatmentName}
           preselectedDoctorId={preselectedDoctorId}
           onOpenLegal={(tab) => setLegalModalTab(tab)}
         />
 
-        {/* 7. Tecnología e Instalaciones */}
+        {/* 6. Tecnología e Instalaciones */}
         <FacilitiesGallery />
 
-        {/* 8. Equipo Odontológico */}
-        <DentalTeam
-          onSelectDoctorForBooking={handleSelectDoctorForBooking}
-        />
+        {/* 7. Equipo Odontológico */}
+        <DentalTeam onSelectDoctorForBooking={handleSelectDoctorForBooking} />
 
-        {/* 9. Proceso de Atención */}
+        {/* 8. Proceso de Atención */}
         <CareProcess />
 
-        {/* 10. Preguntas Frecuentes */}
+        {/* 9. Preguntas Frecuentes */}
         <FAQSection />
 
-        {/* 11. Reseñas y Experiencias */}
+        {/* 10. Reseñas y Experiencias */}
         <ReviewsSection />
 
-        {/* 12. Ubicación & Horarios con Google Maps */}
+        {/* 11. Ubicación & Horarios con Google Maps (Ciudad de Panamá) */}
         <HoursAndLocation />
 
-        {/* 13. Contacto & WhatsApp */}
-        <ContactSection
-          onOpenLegal={(tab) => setLegalModalTab(tab)}
-        />
+        {/* 12. Contacto & WhatsApp */}
+        <ContactSection onOpenLegal={(tab) => setLegalModalTab(tab)} />
 
-        {/* 14. Conversión Comercial - Tu Marca Local */}
+        {/* 13. Conversión Comercial - Tu Marca Local */}
         <TuMarcaLocalPromo />
       </main>
 
-      {/* 15. Footer Completo */}
-      <Footer
-        onOpenLegal={(tab) => setLegalModalTab(tab)}
-      />
+      {/* 14. Footer Completo */}
+      <Footer onOpenLegal={(tab) => setLegalModalTab(tab)} />
 
       {/* Persuasive overlays */}
-      <ExitIntentModal
-        onExploreTreatments={() => scrollToSection('tratamientos')}
-      />
+      <ExitIntentModal onExploreTreatments={() => scrollToSection('tratamientos')} />
 
-      <MobileStickyCTA
-        onOpenBooking={() => scrollToSection('reserva')}
-      />
+      <MobileStickyCTA onOpenBooking={() => scrollToSection('reserva')} />
 
       {/* Legal Information Modal */}
       <LegalModal

@@ -26,7 +26,7 @@ export const AboutSection: React.FC = () => {
             <div className="p-4 rounded-xl bg-[#E8E9E7]/60 border border-gray-300 flex items-start gap-3">
               <Info className="w-5 h-5 text-[#10283F] shrink-0 mt-0.5" />
               <p className="text-xs text-gray-600 leading-relaxed">
-                <strong className="text-[#10283F]">Demostración Comercial:</strong> Clínica Dental Moderna es una entidad ficticia diseñada para exhibir las capacidades web, cotizador y motor de reservas desarrollados por <strong>Tu Marca Local</strong>.
+                <strong className="text-[#10283F]">Demostración Comercial:</strong> Clínica Dental Moderna es una entidad ficticia diseñada para exhibir las capacidades web, solicitud de cotizaciones y motor de reservas desarrollados por <strong>Tu Marca Local</strong>.
               </p>
             </div>
           </div>
@@ -47,7 +47,7 @@ export const AboutSection: React.FC = () => {
             </p>
 
             <p className="text-gray-600 text-base leading-relaxed">
-              Nuestro objetivo es facilitar el acceso a información clara sobre los tratamientos, sus presupuestos orientativos y la solicitud de citas.
+              Nuestro objetivo es facilitar el acceso a información clara sobre cada especialidad, la solicitud de cotizaciones y el agendamiento de citas.
             </p>
 
             {/* 4 Attributes Grid */}

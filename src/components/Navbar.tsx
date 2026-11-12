@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Calendar, Menu, X, Sparkles, Phone } from 'lucide-react';
+import { Calendar, Menu, X } from 'lucide-react';
+import { DentalLogo } from './DentalLogo';
 
 interface NavbarProps {
   onOpenBooking: () => void;
@@ -27,27 +28,21 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
           onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
           className="flex items-center gap-3 shrink-0 group"
         >
-          <div className="w-10 h-10 rounded-full border border-[#C5A46D] flex items-center justify-center bg-[#10283F] group-hover:border-white transition-colors">
-            <Sparkles className="w-5 h-5 text-[#C5A46D]" />
+          <div className="w-10 h-10 rounded-lg border border-[#C5A46D]/70 flex items-center justify-center bg-[#10283F] group-hover:border-white transition-colors">
+            <DentalLogo className="w-6 h-6 text-[#C5A46D]" />
           </div>
           <span className="font-serif-luxury text-xl sm:text-2xl font-bold tracking-tight text-white whitespace-nowrap">
             CLÍNICA DENTAL MODERNA
           </span>
         </a>
 
-        {/* Zone 2: 5 Navigation Links (Single Line) */}
+        {/* Zone 2: 4 Navigation Links (Single Line) */}
         <nav className="hidden lg:flex items-center gap-7 text-sm font-medium tracking-wide">
           <button 
             onClick={() => scrollToSection('tratamientos')}
             className="text-gray-200 hover:text-[#C5A46D] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
           >
             Tratamientos
-          </button>
-          <button 
-            onClick={() => scrollToSection('cotizador')}
-            className="text-gray-200 hover:text-[#C5A46D] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-          >
-            Cotizador
           </button>
           <button 
             onClick={() => scrollToSection('reserva')}
@@ -100,12 +95,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
             className="block w-full text-left py-2 text-base font-medium text-gray-200 hover:text-[#C5A46D]"
           >
             Tratamientos
-          </button>
-          <button 
-            onClick={() => scrollToSection('cotizador')}
-            className="block w-full text-left py-2 text-base font-medium text-gray-200 hover:text-[#C5A46D]"
-          >
-            Cotizador
           </button>
           <button 
             onClick={() => scrollToSection('reserva')}

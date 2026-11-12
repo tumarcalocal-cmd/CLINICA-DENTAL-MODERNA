@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Heart } from 'lucide-react';
+import { DentalLogo } from './DentalLogo';
 
 interface FooterProps {
   onOpenLegal: (tab: 'privacy' | 'terms' | 'disclaimer') => void;
@@ -23,8 +23,8 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal }) => {
           {/* Col 1: Brand */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full border border-[#C5A46D] flex items-center justify-center bg-[#10283F]">
-                <Sparkles className="w-4 h-4 text-[#C5A46D]" />
+              <div className="w-9 h-9 rounded-lg border border-[#C5A46D]/70 flex items-center justify-center bg-[#10283F]">
+                <DentalLogo className="w-5 h-5 text-[#C5A46D]" />
               </div>
               <span className="font-serif-luxury text-xl font-bold text-white">
                 CLÍNICA DENTAL MODERNA
@@ -47,11 +47,6 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal }) => {
               <li>
                 <button onClick={() => scrollToSection('tratamientos')} className="hover:text-white transition-colors">
                   Tratamientos Odontológicos
-                </button>
-              </li>
-              <li>
-                <button onClick={() => scrollToSection('cotizador')} className="hover:text-white transition-colors">
-                  Cotizador Interactivo
                 </button>
               </li>
               <li>

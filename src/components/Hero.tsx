@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, ChevronRight, ShieldCheck, Cpu, Smile } from 'lucide-react';
+import { Calendar, ChevronRight, ShieldCheck, Microscope, Smile } from 'lucide-react';
 
 interface HeroProps {
   onOpenBooking: () => void;
@@ -20,7 +20,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreTreatments }
             
             {/* Tagline kicker */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#C5A46D]/15 border border-[#C5A46D]/40 text-[#C5A46D] text-xs font-semibold tracking-wide uppercase">
-              <span className="w-2 h-2 rounded-full bg-[#C5A46D]"></span>
               <span>CLÍNICA DENTAL DE DEMOSTRACIÓN · PANAMÁ</span>
             </div>
 
@@ -56,7 +55,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreTreatments }
 
               {/* Indicator of Availability */}
               <div className="flex items-center gap-2 text-xs text-[#C5A46D] font-medium pt-1">
-                <span className="inline-block w-2 h-2 rounded-full bg-emerald-400"></span>
                 <span>CONSULTA LOS HORARIOS DISPONIBLES PARA TU CITA.</span>
               </div>
             </div>
@@ -75,7 +73,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreTreatments }
 
               <div className="flex items-start gap-3">
                 <div className="p-2 rounded bg-white/5 border border-[#C5A46D]/30 shrink-0">
-                  <Cpu className="w-5 h-5 text-[#C5A46D]" />
+                  <Microscope className="w-5 h-5 text-[#C5A46D]" />
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-white uppercase tracking-wider">Tecnología dental moderna</h4>

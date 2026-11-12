@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageSquare, Sparkles, ExternalLink } from 'lucide-react';
+import { MessageSquare, Globe, ExternalLink } from 'lucide-react';
 
 export const TuMarcaLocalPromo: React.FC = () => {
   const whatsappUrl = "https://wa.me/50765278910?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20una%20p%C3%A1gina%20web";
@@ -10,7 +10,7 @@ export const TuMarcaLocalPromo: React.FC = () => {
         
         {/* Discrete Top Strip */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#C5A46D]/20 border border-[#C5A46D]/40 text-[#C5A46D] text-xs font-bold uppercase tracking-widest">
-          <Sparkles className="w-4 h-4 text-[#C5A46D]" />
+          <Globe className="w-4 h-4 text-[#C5A46D]" />
           <span>DEMOSTRACIÓN WEB CREADA POR TU MARCA LOCAL</span>
         </div>
 
@@ -20,7 +20,7 @@ export const TuMarcaLocalPromo: React.FC = () => {
             ¿QUIERES UNA PÁGINA ASÍ PARA TU CLÍNICA DENTAL?
           </h2>
           <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
-            Presenta tus tratamientos, muestra tarifas orientativas, facilita solicitudes de presupuesto y permite que tus pacientes soliciten citas desde una página web profesional.
+            Presenta tus tratamientos, facilita solicitudes de cotización y permite que tus pacientes soliciten citas desde una página web profesional.
           </p>
           <p className="text-xs text-gray-400 italic leading-relaxed max-w-2xl mx-auto pt-2">
             Comunícate por WhatsApp únicamente si tienes alguna duda sobre cómo obtener una página web similar para tu clínica que no esté explicada en esta demostración.
