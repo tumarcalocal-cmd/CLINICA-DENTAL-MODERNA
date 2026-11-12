@@ -3,125 +3,104 @@ import { Calendar, Menu, X } from 'lucide-react';
 import { DentalLogo } from './DentalLogo';
 
 interface NavbarProps {
-  onOpenBooking: () => void;
-  onOpenLegal: (tab: 'privacy' | 'terms' | 'disclaimer') => void;
+  onNavigate: (sectionId: string) => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
+const NAV_ITEMS = [
+  { id: 'inicio', label: 'Inicio' },
+  { id: 'tratamientos', label: 'Tratamientos' },
+  { id: 'nosotros', label: 'Nosotros' },
+  { id: 'testimonios', label: 'Testimonios' },
+  { id: 'contacto', label: 'Contacto' },
+];
+
+export const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const scrollToSection = (id: string) => {
+  const handleLinkClick = (sectionId: string) => {
     setMobileMenuOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    onNavigate(sectionId);
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-[#10283F]/95 backdrop-blur-md border-b border-[#C5A46D]/30 text-white shadow-lg transition-all duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-8">
-        
-        {/* Zone 1: Single-element Brand Wordmark */}
-        <a 
-          href="#" 
-          onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-          className="flex items-center gap-3 shrink-0 group"
+    <header className="sticky top-0 z-40 bg-[#10283F]/95 backdrop-blur-md border-b border-[#C5A46D]/25 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-6">
+        {/* Brand Zone */}
+        <a
+          href="#inicio"
+          onClick={(e) => {
+            e.preventDefault();
+            handleLinkClick('inicio');
+          }}
+          className="flex items-center gap-3 shrink-0 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A46D] rounded-lg"
         >
-          <div className="w-10 h-10 rounded-lg border border-[#C5A46D]/70 flex items-center justify-center bg-[#10283F] group-hover:border-white transition-colors">
+          <div className="w-10 h-10 rounded-lg border border-[#C5A46D]/70 flex items-center justify-center bg-[#10283F] group-hover:border-[#C5A46D] transition-colors">
             <DentalLogo className="w-6 h-6 text-[#C5A46D]" />
           </div>
-          <span className="font-serif-luxury text-xl sm:text-2xl font-bold tracking-tight text-white whitespace-nowrap">
-            CLÍNICA DENTAL MODERNA
+          <span className="font-serif-luxury text-lg sm:text-xl font-semibold tracking-tight text-white whitespace-nowrap">
+            Clínica Dental Moderna
           </span>
         </a>
 
-        {/* Zone 2: 4 Navigation Links (Single Line) */}
-        <nav className="hidden lg:flex items-center gap-7 text-sm font-medium tracking-wide">
-          <button 
-            onClick={() => scrollToSection('tratamientos')}
-            className="text-gray-200 hover:text-[#C5A46D] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-          >
-            Tratamientos
-          </button>
-          <button 
-            onClick={() => scrollToSection('reserva')}
-            className="text-gray-200 hover:text-[#C5A46D] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-          >
-            Reserva de Citas
-          </button>
-          <button 
-            onClick={() => scrollToSection('equipo')}
-            className="text-gray-200 hover:text-[#C5A46D] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-          >
-            Equipo Odontológico
-          </button>
-          <button 
-            onClick={() => scrollToSection('ubicacion')}
-            className="text-gray-200 hover:text-[#C5A46D] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-          >
-            Ubicación & Horarios
-          </button>
+        {/* Desktop Nav Zone: 5 concise options */}
+        <nav aria-label="Navegación principal" className="hidden lg:flex items-center gap-7 text-sm font-medium">
+          {NAV_ITEMS.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => handleLinkClick(item.id)}
+              className="text-gray-200 hover:text-[#C5A46D] transition-colors whitespace-nowrap shrink-0 cursor-pointer py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A46D] rounded"
+            >
+              {item.label}
+            </button>
+          ))}
         </nav>
 
-        {/* Zone 3: Single Primary Action */}
-        <div className="hidden sm:flex items-center gap-3 shrink-0">
-          <button 
-            onClick={onOpenBooking}
-            className="px-5 py-2.5 bg-[#C5A46D] hover:bg-[#b38f56] text-[#10283F] text-xs font-bold uppercase tracking-wider rounded-md transition-all shadow-md hover:shadow-lg flex items-center gap-2 cursor-pointer whitespace-nowrap shrink-0"
+        {/* Desktop Primary Action */}
+        <div className="hidden lg:flex items-center shrink-0">
+          <button
+            type="button"
+            onClick={() => handleLinkClick('citas')}
+            className="px-5 py-2.5 bg-[#C5A46D] hover:bg-[#b38f56] text-[#10283F] text-xs font-bold uppercase tracking-wider rounded-lg transition-colors flex items-center gap-2 cursor-pointer whitespace-nowrap shrink-0"
           >
             <Calendar className="w-4 h-4" />
-            <span>RESERVAR CITA</span>
+            <span>Agendar cita</span>
           </button>
         </div>
 
-        {/* Mobile menu hamburger toggle */}
-        <div className="flex lg:hidden items-center gap-2">
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-gray-200 hover:text-white rounded-md focus:outline-none"
-            aria-label="Abrir menú"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
+        {/* Mobile Toggle */}
+        <button
+          type="button"
+          onClick={() => setMobileMenuOpen((prev) => !prev)}
+          className="lg:hidden p-2.5 text-gray-200 hover:text-white rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A46D] cursor-pointer"
+          aria-label={mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
+          aria-expanded={mobileMenuOpen}
+        >
+          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Dropdown Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#10283F] border-b border-[#C5A46D]/20 px-6 py-6 space-y-4">
-          <button 
-            onClick={() => scrollToSection('tratamientos')}
-            className="block w-full text-left py-2 text-base font-medium text-gray-200 hover:text-[#C5A46D]"
-          >
-            Tratamientos
-          </button>
-          <button 
-            onClick={() => scrollToSection('reserva')}
-            className="block w-full text-left py-2 text-base font-medium text-gray-200 hover:text-[#C5A46D]"
-          >
-            Reserva de Citas
-          </button>
-          <button 
-            onClick={() => scrollToSection('equipo')}
-            className="block w-full text-left py-2 text-base font-medium text-gray-200 hover:text-[#C5A46D]"
-          >
-            Equipo Odontológico
-          </button>
-          <button 
-            onClick={() => scrollToSection('ubicacion')}
-            className="block w-full text-left py-2 text-base font-medium text-gray-200 hover:text-[#C5A46D]"
-          >
-            Ubicación & Horarios
-          </button>
-
-          <div className="pt-4 border-t border-gray-700/50">
-            <button 
-              onClick={() => { setMobileMenuOpen(false); onOpenBooking(); }}
-              className="w-full py-3 bg-[#C5A46D] hover:bg-[#b38f56] text-[#10283F] font-bold text-xs uppercase tracking-wider rounded-md flex items-center justify-center gap-2 shadow-md"
+        <div className="lg:hidden bg-[#10283F] border-t border-[#C5A46D]/20 px-4 sm:px-6 py-4 space-y-1">
+          {NAV_ITEMS.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => handleLinkClick(item.id)}
+              className="block w-full text-left px-3 py-3 text-base font-medium text-gray-200 hover:text-[#C5A46D] hover:bg-white/5 rounded-lg transition-colors cursor-pointer"
+            >
+              {item.label}
+            </button>
+          ))}
+          <div className="pt-3 mt-2 border-t border-white/10">
+            <button
+              type="button"
+              onClick={() => handleLinkClick('citas')}
+              className="w-full py-3.5 px-4 bg-[#C5A46D] hover:bg-[#b38f56] text-[#10283F] font-bold text-sm uppercase tracking-wider rounded-lg flex items-center justify-center gap-2 cursor-pointer"
             >
               <Calendar className="w-4 h-4" />
-              <span>RESERVAR MI CITA</span>
+              <span>Agendar cita</span>
             </button>
           </div>
         </div>

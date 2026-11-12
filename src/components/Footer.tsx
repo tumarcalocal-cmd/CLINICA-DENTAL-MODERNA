@@ -1,128 +1,107 @@
 import React from 'react';
+import { ExternalLink } from 'lucide-react';
 import { DentalLogo } from './DentalLogo';
+import { CLINIC_CONFIG } from '../config/clinicConfig';
 
 interface FooterProps {
-  onOpenLegal: (tab: 'privacy' | 'terms' | 'disclaimer') => void;
+  onNavigate: (sectionId: string) => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onOpenLegal }) => {
-  const scrollToSection = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
+export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   return (
-    <footer className="bg-[#10283F] text-gray-300 border-t border-[#C5A46D]/30 pt-16 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        
-        {/* Top 4-Column Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          
-          {/* Col 1: Brand */}
-          <div className="space-y-4">
+    <footer className="bg-[#10283F] text-gray-300 border-t border-[#C5A46D]/25 py-14">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          {/* Brand */}
+          <div className="md:col-span-5 space-y-3">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-lg border border-[#C5A46D]/70 flex items-center justify-center bg-[#10283F]">
                 <DentalLogo className="w-5 h-5 text-[#C5A46D]" />
               </div>
-              <span className="font-serif-luxury text-xl font-bold text-white">
-                CLÍNICA DENTAL MODERNA
+              <span className="font-serif-luxury text-lg font-semibold text-white">
+                {CLINIC_CONFIG.clinicName}
               </span>
             </div>
-
-            <p className="text-xs text-gray-400 italic leading-relaxed">
-              "Una sonrisa saludable. Una experiencia excepcional."
-            </p>
-
-            <p className="text-xs text-gray-400 leading-relaxed">
-              Plataforma web de demostración especializada en odontología, cotizaciones de tratamientos y solicitud de citas.
+            <p className="text-xs text-gray-400 leading-relaxed max-w-sm">
+              {CLINIC_CONFIG.tagline}
             </p>
           </div>
 
-          {/* Col 2: Navigation */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-bold text-[#C5A46D] uppercase tracking-wider">Navegación</h4>
+          {/* Quick Links */}
+          <div className="md:col-span-3 space-y-2.5">
+            <h4 className="text-xs font-bold text-[#C5A46D] uppercase tracking-wider">
+              Navegación
+            </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <button onClick={() => scrollToSection('tratamientos')} className="hover:text-white transition-colors">
-                  Tratamientos Odontológicos
+                <button
+                  type="button"
+                  onClick={() => onNavigate('inicio')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  Inicio
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollToSection('reserva')} className="hover:text-white transition-colors">
-                  Reserva de Citas
+                <button
+                  type="button"
+                  onClick={() => onNavigate('tratamientos')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  Tratamientos
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollToSection('equipo')} className="hover:text-white transition-colors">
-                  Equipo Odontológico
+                <button
+                  type="button"
+                  onClick={() => onNavigate('nosotros')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  Nosotros
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollToSection('faq')} className="hover:text-white transition-colors">
-                  Preguntas Frecuentes
+                <button
+                  type="button"
+                  onClick={() => onNavigate('citas')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  Agendar cita
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollToSection('ubicacion')} className="hover:text-white transition-colors">
-                  Ubicación & Horarios
+                <button
+                  type="button"
+                  onClick={() => onNavigate('contacto')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  Contacto
                 </button>
               </li>
             </ul>
           </div>
 
-          {/* Col 3: Legal */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-bold text-[#C5A46D] uppercase tracking-wider">Páginas Legales</h4>
-            <ul className="space-y-2 text-xs">
-              <li>
-                <button onClick={() => onOpenLegal('disclaimer')} className="hover:text-white transition-colors">
-                  Descargo de Responsabilidad
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onOpenLegal('privacy')} className="hover:text-white transition-colors">
-                  Política de Privacidad
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onOpenLegal('terms')} className="hover:text-white transition-colors">
-                  Términos y Condiciones
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          {/* Col 4: Demo Notice */}
-          <div className="space-y-3 bg-white/5 p-4 rounded-xl border border-white/10 text-xs">
-            <h4 className="font-bold text-white uppercase text-[11px] text-[#C5A46D]">Aviso de Demostración</h4>
-            <p className="text-gray-400 leading-relaxed text-[11px]">
-              Este sitio no presta servicios odontológicos reales, no realiza diagnósticos ni confirma citas efectivas. Es un modelo comercial creado para exhibir las soluciones web desarrolladas por <strong>Tu Marca Local</strong>.
+          {/* Demo Identification & Tu Marca Local CTA */}
+          <div className="md:col-span-4 bg-white/5 border border-white/10 rounded-xl p-5 space-y-4">
+            <p className="text-xs text-gray-200 font-medium leading-relaxed">
+              Sitio web demostrativo desarrollado por <strong>Tu Marca Local</strong>.
             </p>
-          </div>
-
-        </div>
-
-        {/* Bottom Bar Credit */}
-        <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400">
-          <div>
-            © {new Date().getFullYear()} Clínica Dental Moderna. Todos los derechos reservados.
-          </div>
-
-          <div className="flex items-center gap-1 text-[#C5A46D] font-semibold">
-            <span>Demostración comercial creada por</span>
-            <a 
-              href="https://wa.me/50765278910?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20una%20p%C3%A1gina%20web" 
-              target="_blank" 
-              rel="noreferrer"
-              className="underline hover:text-white"
+            <a
+              href={CLINIC_CONFIG.agencyContactUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-full sm:w-auto items-center justify-center gap-2 px-5 py-3 bg-[#C5A46D] hover:bg-[#b38f56] text-[#10283F] font-bold text-xs uppercase tracking-wider rounded-lg transition-colors"
             >
-              Tu Marca Local
+              <span>Quiero una página como esta</span>
+              <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
         </div>
 
+        <div className="pt-6 border-t border-white/10 text-xs text-gray-400 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <span>© {new Date().getFullYear()} {CLINIC_CONFIG.clinicName}. Modelo demostrativo.</span>
+          <span>Sitio web demostrativo desarrollado por Tu Marca Local.</span>
+        </div>
       </div>
     </footer>
   );

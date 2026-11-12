@@ -1,122 +1,66 @@
 import React, { useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
+import { TreatmentsSection } from './components/TreatmentsSection';
 import { AboutSection } from './components/AboutSection';
-import { SpecialtiesCatalog } from './components/SpecialtiesCatalog';
-import { BookingCalendar } from './components/BookingCalendar';
-import { FacilitiesGallery } from './components/FacilitiesGallery';
-import { DentalTeam } from './components/DentalTeam';
-import { CareProcess } from './components/CareProcess';
-import { FAQSection } from './components/FAQSection';
-import { ReviewsSection } from './components/ReviewsSection';
-import { HoursAndLocation } from './components/HoursAndLocation';
+import { BenefitsSection } from './components/BenefitsSection';
+import { TestimonialsSection } from './components/TestimonialsSection';
+import { AppointmentSection } from './components/AppointmentSection';
 import { ContactSection } from './components/ContactSection';
-import { ExitIntentModal } from './components/ExitIntentModal';
-import { MobileStickyCTA } from './components/MobileStickyCTA';
-import { TuMarcaLocalPromo } from './components/TuMarcaLocalPromo';
-import { LegalModal } from './components/LegalModal';
 import { Footer } from './components/Footer';
-
-import { SpecialtyCategory } from './types/dental';
+import { WhatsAppFloatingButton } from './components/WhatsAppFloatingButton';
 
 export default function App() {
-  const [selectedSpecialty, setSelectedSpecialty] = useState<SpecialtyCategory>('ODONTOLOGÍA GENERAL');
-  const [selectedTreatmentName, setSelectedTreatmentName] = useState<string>(
-    'Consulta Odontológica y Evaluación Dental'
-  );
-  const [preselectedDoctorId, setPreselectedDoctorId] = useState<string>('');
-  const [legalModalTab, setLegalModalTab] = useState<'privacy' | 'terms' | 'disclaimer' | null>(null);
+  const [selectedTreatment, setSelectedTreatment] = useState<string>('');
 
-  const scrollToSection = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
-  const handleRequestQuote = (specialty: SpecialtyCategory, treatmentName?: string) => {
-    setSelectedSpecialty(specialty);
-    if (treatmentName) {
-      setSelectedTreatmentName(treatmentName);
-    }
-    scrollToSection('reserva');
-  };
-
-  const handleSelectDoctorForBooking = (docId: string) => {
-    setPreselectedDoctorId(docId);
-    scrollToSection('reserva');
+  const handleSelectTreatment = (treatmentName: string) => {
+    setSelectedTreatment(treatmentName);
+    scrollToSection('citas');
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF9F6] text-[#41474D] flex flex-col font-sans selection:bg-[#C5A46D] selection:text-white">
-
-      {/* 1. Header Navigation */}
-      <Navbar
-        onOpenBooking={() => scrollToSection('reserva')}
-        onOpenLegal={(tab) => setLegalModalTab(tab)}
-      />
+    <div className="min-h-screen bg-[#FAF9F6] text-[#41474D] flex flex-col font-sans overflow-x-hidden">
+      {/* 1. Menú principal */}
+      <Navbar onNavigate={scrollToSection} />
 
       <main className="flex-grow">
-        {/* 2. Hero Section */}
+        {/* 2. Sección de bienvenida */}
         <Hero
-          onOpenBooking={() => scrollToSection('reserva')}
+          onOpenBooking={() => scrollToSection('citas')}
           onExploreTreatments={() => scrollToSection('tratamientos')}
         />
 
-        {/* 3. Sobre la Clínica */}
+        {/* 3. Tratamientos */}
+        <TreatmentsSection onSelectTreatment={handleSelectTreatment} />
+
+        {/* 4. Sobre la clínica */}
         <AboutSection />
 
-        {/* 4. Especialidades y Tratamientos (Carrusel) */}
-        <SpecialtiesCatalog onRequestQuote={handleRequestQuote} />
+        {/* 5. Beneficios */}
+        <BenefitsSection />
 
-        {/* 5. Sistema de Reserva de Citas y Solicitud de Cotización */}
-        <BookingCalendar
-          selectedSpecialty={selectedSpecialty}
-          selectedTreatmentName={selectedTreatmentName}
-          preselectedDoctorId={preselectedDoctorId}
-          onOpenLegal={(tab) => setLegalModalTab(tab)}
-        />
+        {/* 6. Testimonios */}
+        <TestimonialsSection />
 
-        {/* 6. Tecnología e Instalaciones */}
-        <FacilitiesGallery />
+        {/* 7. Solicitud de cita */}
+        <AppointmentSection selectedTreatment={selectedTreatment} />
 
-        {/* 7. Equipo Odontológico */}
-        <DentalTeam onSelectDoctorForBooking={handleSelectDoctorForBooking} />
-
-        {/* 8. Proceso de Atención */}
-        <CareProcess />
-
-        {/* 9. Preguntas Frecuentes */}
-        <FAQSection />
-
-        {/* 10. Reseñas y Experiencias */}
-        <ReviewsSection />
-
-        {/* 11. Ubicación & Horarios con Google Maps (Ciudad de Panamá) */}
-        <HoursAndLocation />
-
-        {/* 12. Contacto & WhatsApp */}
-        <ContactSection onOpenLegal={(tab) => setLegalModalTab(tab)} />
-
-        {/* 13. Conversión Comercial - Tu Marca Local */}
-        <TuMarcaLocalPromo />
+        {/* 8. Contacto y ubicación */}
+        <ContactSection />
       </main>
 
-      {/* 14. Footer Completo */}
-      <Footer onOpenLegal={(tab) => setLegalModalTab(tab)} />
+      {/* 9. Pie de página */}
+      <Footer onNavigate={scrollToSection} />
 
-      {/* Persuasive overlays */}
-      <ExitIntentModal onExploreTreatments={() => scrollToSection('tratamientos')} />
-
-      <MobileStickyCTA onOpenBooking={() => scrollToSection('reserva')} />
-
-      {/* Legal Information Modal */}
-      <LegalModal
-        activeTab={legalModalTab}
-        onClose={() => setLegalModalTab(null)}
-        onSelectTab={(tab) => setLegalModalTab(tab)}
-      />
-
+      {/* Botón flotante discreto de WhatsApp */}
+      <WhatsAppFloatingButton />
     </div>
   );
 }
